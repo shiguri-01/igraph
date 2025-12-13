@@ -1,4 +1,16 @@
 import random
+import re
+
+
+def sanitize_id(text: str) -> str:
+    """テキストをID用にサニタイズする"""
+    text = text.replace(" ", "_")
+    # XML特殊文字と制御文字を削除
+    text = re.sub(r'[<>&"\'\x00-\x1f\x7f]', "", text)
+
+    if len(text) > 50:
+        text = text[:50]
+    return text
 
 
 def make_id(id_str: str) -> str:

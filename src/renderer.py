@@ -2,7 +2,7 @@ import inkex
 
 from graph import Axis, Frame, Graph, Plot, TickLabel, TickMark, Title
 from style import AxisStyle, GraphStyle, MarkerStyle, StrokeStyle, TextStyle, TickStyle
-from utils import make_id
+from utils import make_id, sanitize_id
 
 
 class InkscapeRenderer:
@@ -36,7 +36,10 @@ class InkscapeRenderer:
         """
         # ルートグループを作成
         root = parent.add(inkex.Group())
-        root.set("id", make_id("graph"))
+        graph_id = "graph"
+        if graph.title:
+            graph_id = f"graph-{sanitize_id(graph.title.text)}"
+        root.set("id", make_id(graph_id))
         root.transform.add_translate(x, y)
 
         # 外枠
@@ -111,7 +114,10 @@ class InkscapeRenderer:
     ) -> inkex.Group:
         """軸を描画。"""
         group = parent.add(inkex.Group())
-        group.set("id", make_id(f"{axis.placement}-axis"))
+        axis_id = f"{axis.placement}-axis"
+        if axis.label:
+            axis_id = f"{axis.placement}-axis-{sanitize_id(axis.label)}"
+        group.set("id", make_id(axis_id))
 
         # 軸の位置を計算
         axis_pos = self._calc_axis_position(axis, width, height)
