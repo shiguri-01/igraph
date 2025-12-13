@@ -19,7 +19,7 @@ from graph import (
     TickMark,
     Title,
 )
-from renderer import InkscapeRenderer
+from renderer import InkscapeRenderer, find_existing_graph
 from style import (
     AxisStyle,
     GraphStyle,
@@ -154,6 +154,9 @@ class RenderGraphExtension(inkex.EffectExtension):
         pars.add_argument("--frame_right", type=inkex.Boolean, default=True)
 
         # Details
+        pars.add_argument("--append_to_existing_title", type=inkex.Boolean, default=True)
+
+        # Details
         pars.add_argument("--plot_width", type=int, default=400)
         pars.add_argument("--plot_height", type=int, default=400)
         pars.add_argument("--font_family", type=str, default="sans-serif")
@@ -247,7 +250,15 @@ class RenderGraphExtension(inkex.EffectExtension):
         # レンダリング
         renderer = InkscapeRenderer(style)
         layer = self.svg.get_current_layer()
-        renderer.render(graph, layer, x, y, width, height)
+
+        # タイトルがあれば同じタイトルの既存グラフを探す
+        existing_group = None
+        if self.options.append_to_existing_title and self.options.title_text:
+            existing_group = find_existing_graph(layer, self.options.title_text)
+
+        # 既存のグラフがあればその中に追加で描画、なければ新規に位置指定して描画
+        destination = (layer, x, y) if existing_group is None else existing_group
+        renderer.render(graph, destination, width, height)
 
     def _build_x_axis(self) -> Axis:
         """X軸を構築する"""

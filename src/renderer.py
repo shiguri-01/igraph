@@ -5,6 +5,30 @@ from style import AxisStyle, GraphStyle, MarkerStyle, StrokeStyle, TextStyle, Ti
 from utils import make_id, sanitize_id
 
 
+def find_existing_graph(parent: inkex.BaseElement, title: str) -> inkex.Group | None:
+    """
+    親要素内に同じタイトルを持つグラフグループが既に存在するかチェック。
+
+    Args:
+        parent: 検索対象の親要素
+        title: グラフのタイトル文字列
+
+    Returns:
+        既存のグループが見つかればそれを返す。なければNone。
+    """
+    graph_id_base = f"graph-{sanitize_id(title)}"
+
+    for child in parent:
+        if isinstance(child, inkex.Group):
+            child_id = child.get("id", "")
+            # IDがgraph_id_baseで始まる場合、既存のグラフとみなす
+            # make_id関数は "base_XXXX" という形式でIDを生成するため、
+            # "graph-title_" で始まるIDをチェック
+            if child_id.startswith(f"{graph_id_base}_"):
+                return child
+    return None
+
+
 class InkscapeRenderer:
     """Graph を受け取り、Style を適用して SVG を生成するレンダラー。"""
 
@@ -14,9 +38,7 @@ class InkscapeRenderer:
     def render(
         self,
         graph: Graph,
-        parent: inkex.BaseElement,
-        x: float,
-        y: float,
+        destination: inkex.Group | tuple[inkex.BaseElement, float, float],
         width: float,
         height: float,
     ) -> inkex.Group:
@@ -25,22 +47,27 @@ class InkscapeRenderer:
 
         Args:
             graph: 描画するグラフの定義
-            parent: SVG親要素
-            x: 描画位置X
-            y: 描画位置Y
+            destination: 描画先。既存のGroupまたは(parent, x, y)のタプル
             width: プロットエリアの幅
             height: プロットエリアの高さ
 
         Returns:
-            作成されたルートグループ
+            使用または作成されたルートグループ
         """
-        # ルートグループを作成
-        root = parent.add(inkex.Group())
-        graph_id = "graph"
-        if graph.title:
-            graph_id = f"graph-{sanitize_id(graph.title.text)}"
-        root.set("id", make_id(graph_id))
-        root.transform.add_translate(x, y)
+        if isinstance(destination, inkex.Group):
+            # 既存のグループに描画
+            root = destination
+        else:
+            # 新しいルートグループを作成
+            parent, x, y = destination
+
+            graph_id_base = "graph"
+            if graph.title:
+                graph_id_base = f"graph-{sanitize_id(graph.title.text)}"
+
+            root = parent.add(inkex.Group())
+            root.set("id", make_id(graph_id_base))
+            root.transform.add_translate(x, y)
 
         # 外枠
         if graph.frame:

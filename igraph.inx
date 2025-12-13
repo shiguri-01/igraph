@@ -268,6 +268,14 @@
       </hbox>
       <spacer />
 
+      <label appearance="header">動作</label>
+      <vbox indent="1">
+        <param name="append_to_existing_title" type="bool" gui-text="同じタイトルのグラフグループに追加で描画する">true</param>
+        <label>・選択されているレイヤーから、同じタイトルを持つグラフのSVGグループを探して、その中に描画します</label>
+        <label>・タイトルが設定されている場合のみ有効</label>
+      </vbox>
+      <spacer />
+
       <label appearance="header">フォント</label>
       <param name="font_family" type="string" gui-text="フォントファミリー：" indent="1">sans-serif</param>
       <hbox indent="1">
