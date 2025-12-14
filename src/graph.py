@@ -138,7 +138,7 @@ class LogSubTicker:
         if interval.min <= 0:
             return np.array([])
 
-        start_exp = np.ceil(np.log10(interval.min))
+        start_exp = np.floor(np.log10(interval.min))
         end_exp = np.floor(np.log10(interval.max))
 
         if start_exp > end_exp:
