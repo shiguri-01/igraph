@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <name>Igraph</name>
-  <id>org.shiguri.effect.igraph</id>
+  <name>Plot</name>
+  <id>org.shiguri.effect.plot</id>
   <dependency type="executable" location="inx">src/main.py</dependency>
 
   <param name="tab" type="notebook">

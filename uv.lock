@@ -12,27 +12,6 @@ wheels = [
 ]
 
 [[package]]
-name = "igraph"
-version = "0.1.0"
-source = { virtual = "." }
-
-[package.dev-dependencies]
-dev = [
-    { name = "inkex" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "inkex", specifier = ">=1.4.1" },
-    { name = "ruff", specifier = ">=0.14.5" },
-    { name = "ty", specifier = ">=0.0.1a27" },
-]
-
-[[package]]
 name = "inkex"
 version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
@@ -51,6 +30,27 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9c/a8/ef5b5776e8f2a05e2eff2c9b6acf2ea8e90a9af5d29f0841a8ac5111ce60/inkex-1.4.1.tar.gz", hash = "sha256:2f9803154806ebae8a40b33ef2c691806a472857adc90303eaa32482bd8c19ed", size = 181213, upload-time = "2025-03-31T21:10:42.959Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/de/bb8fecc38c2925f105b745ddfe35388c921bc3a5e9014325254451ab4af7/inkex-1.4.1-py3-none-any.whl", hash = "sha256:5039af02a834144cd9373448bb81c9d657319e5734dc8db0609bb306cbcf2726", size = 230973, upload-time = "2025-03-31T21:10:40.755Z" },
+]
+
+[[package]]
+name = "inkscape-plot"
+version = "0.1.0"
+source = { virtual = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "inkex" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "inkex", specifier = ">=1.4.1" },
+    { name = "ruff", specifier = ">=0.14.5" },
+    { name = "ty", specifier = ">=0.0.1a27" },
 ]
 
 [[package]]
