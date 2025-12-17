@@ -36,7 +36,6 @@ from renderer.renderer import (
 )
 
 # TODO: 軸のmirror対応
-# TODO: 軸の向きの逆転
 
 
 def parse_data(
