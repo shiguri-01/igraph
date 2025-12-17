@@ -1,5 +1,6 @@
 import inkex
 import numpy as np
+import re
 
 from graph import (
     Axis,
@@ -253,7 +254,8 @@ class RenderGraphExtension(inkex.EffectExtension):
         target_label = None
         if title:
             # Sanitize title and add prefix for safe/distinct labeling
-            sanitized_title = title.replace("'", "_").replace('"', "_")
+            # Allow word chars (including Japanese), spaces, and hyphens. Replace others with underscore.
+            sanitized_title = re.sub(r'[^\w\s\-]', '_', title)
             target_label = "graph_" + sanitized_title
 
         if self.options.group_by_title and target_label is not None:
